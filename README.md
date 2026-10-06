@@ -14,6 +14,8 @@
 
 <sub>CLUSTER · TRAFFIC · MAP — three faces, one instrument</sub>
 
+<sub>By <b>Bert Peters</b> · <a href="https://github.com/codereimagine">codereimagine</a></sub>
+
 </div>
 
 ---
