@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="A network speed test built as one chronograph instrument — download, upload, ping, live traffic and signal by room, over a real keyless speed test. No accounts, no trackers, no ads.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-t2zUvThG/RR3M4wNTe4yomSJi7f5pV7RGSgeXlIJrY0='; style-src 'unsafe-inline'; font-src data:; img-src data:; connect-src https://speed.cloudflare.com http://127.0.0.1:7717 http://localhost:7717; base-uri 'none'; form-action 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gq1HtZ9hxFRvUZPhmnbyO6pdDGyCEU7zk8dkw5OynZ4='; style-src 'unsafe-inline'; font-src data:; img-src data:; connect-src https://speed.cloudflare.com http://127.0.0.1:7717 http://localhost:7717; base-uri 'none'; form-action 'none';">
 <style>
 @font-face {
   font-family: 'JetBrains Mono';
@@ -456,7 +456,12 @@ async function agentCheck(){
   var dt=document.querySelector(".demotag");
   if(dt) dt.textContent = agentOn ? "RSSI · AGENT" : (mapBasis==="micro" ? "MICRO-TEST" : "DEMO DATA");
 }
-setInterval(agentCheck,15000);
+var agentTimer=null;                          // the agent probe is LAZY — only when the user opens TRAFFIC/MAP,
+async function ensureAgent(){                  // never on cold load. A refused loopback connect is logged by the
+  await agentCheck();                          // browser's network layer (not catchable in JS), so we don't make it
+  if(agentOn){ if(!agentTimer) agentTimer=setInterval(agentCheck,15000); }   // keep fresh only while present
+  else if(agentTimer){ clearInterval(agentTimer); agentTimer=null; }
+}
 // real flow feed → trafBuf (ABSOLUTE Mbps, unclamped — the dial re-fits, the digits stay honest)
 setInterval(async function(){
   if(!agentOn) return;
@@ -886,7 +891,7 @@ function runMeasure(){
         var m2=await microTest(mc.signal); mapTarget=m2.q; r.ping=m2.ping; mapBasis="micro";
       }
       rooms[mapSel].sig=mapTarget; saveRooms(); drawRack();   // measurement may land after the ease — store truth
-      agentCheck();
+      ensureAgent();
     }catch(e){ /* keep stored value; measurement failed offline */ }
   })();
   var go=g("mapgo"); go.classList.add("braking"); go.textContent="BRAKES";
@@ -1011,13 +1016,13 @@ function renderReceipt(){
     c2.fillRect(j*bw,cvs.height-2-h,Math.max(1,bw-1.5),h); }
 }
 g("cinfo").addEventListener("click",function(){var open=g("cnote").classList.toggle("show");g("cinfo").classList.toggle("on",open);g("cinfo").setAttribute("aria-expanded",open?"true":"false");});
-agentCheck();
 function buildBoard(){ buildChips(); }
 buildChips();
 if(rooms[0]) mapDisp=rooms[0].sig;
 
 // ── VIEW switcher ──
 g("viewbar").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.v==="traffic"||b.dataset.v==="map") ensureAgent();   // probe only on intent — keeps cold load (CLUSTER) silent
   [].slice.call(g("viewbar").children).forEach(function(x){x.classList.remove("on");x.setAttribute("aria-selected","false");});b.classList.add("on");b.setAttribute("aria-selected","true");
   var ft=document.querySelector(".foot");
   if(ft){ ft.classList.add("swap");
