@@ -4,6 +4,8 @@
 
 ### A network speed test built as one chronograph instrument — in a single HTML file.
 
+*No accounts, no trackers, no ads — private by design.*
+
 **▶ Live — [codereimagine.github.io/velocity](https://codereimagine.github.io/velocity/)**
 
 <p>
@@ -48,3 +50,7 @@ python3 -m http.server 8099
 ## Credits
 
 Built with [Claude Code](https://claude.com/claude-code).
+
+## License
+
+[Apache-2.0](LICENSE).
