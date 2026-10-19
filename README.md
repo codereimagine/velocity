@@ -4,6 +4,8 @@
 
 ### A network speed test, built as one chronograph instrument — in a single HTML file.
 
+$\textcolor{#00E5CF}{\textsf{download}}$ · $\textcolor{#FFD700}{\textsf{upload}}$ · $\textcolor{#FF3D5C}{\textsf{ping}}$
+
 *No accounts, no sign-up, no ads — and your exact location never leaves your device.*
 
 **▶ Open it — [codereimagine.github.io/velocity](https://codereimagine.github.io/velocity/)**
@@ -24,13 +26,13 @@
 
 ## ⚡ What is it?
 
-velocity measures your internet speed and shows it as a living chronograph. It's a single HTML file — open it and it runs instantly. Three faces: **Cluster** (download, upload and ping on one dial), **Traffic** (your throughput live over time), and **Map** (your connection quality, room by room). One tap to run.
+velocity measures your internet speed and shows it as a living chronograph. It's a single HTML file — open it and it runs instantly. Three faces: $\textcolor{#00E5CF}{\textsf{Cluster}}$ (download, upload and ping on one dial), $\textcolor{#FFD700}{\textsf{Traffic}}$ (your throughput live over time), and $\textcolor{#FF3D5C}{\textsf{Map}}$ (your connection quality, room by room). One tap to run.
 
 No app store, no account, nothing to sign up for. Open the link and it works. Like it? Add it to your home screen like any other app.
 
 ## ✨ How we do things differently
 
-Most apps want your account, your data, and your attention. Every codereimagine app is built the other way round:
+Most apps want your account, your data, and your attention. Every codereimagine app is built $\textcolor{#00E5CF}{\textsf{the other way round}}$:
 
 - **Private by default** — no accounts, no tracking, nothing sold. Your exact location stays on *your* device.
 - **No ads, no clutter** — nothing on the screen is trying to sell you something.
@@ -69,7 +71,7 @@ python3 -m http.server 8099
 
 ## 🙌 Credits & thanks
 
-Built with [Claude Code](https://claude.com/claude-code). Nothing here is hidden — velocity stands on:
+Built with [Claude Code](https://claude.com/claude-code). $\textcolor{#FFD700}{\textsf{Nothing here is hidden}}$ — velocity stands on:
 
 - **Speed test** — [Cloudflare](https://developers.cloudflare.com/speed/)'s keyless HTTPS speed endpoints.
 - **Fonts** — JetBrains Mono & Orbitron (SIL Open Font License 1.1).
