@@ -47,6 +47,14 @@ Most apps want your account, your data, and your attention. Every codereimagine 
 - **Map your signal** — test each room's connection quality; run the optional helper for true WiFi signal strength.
 - **Anywhere** — fast on phones and computers.
 
+## 🧭 How to use it
+
+1. **Open it** — tap [codereimagine.github.io/velocity](https://codereimagine.github.io/velocity/). No install, no account, nothing to sign up for.
+2. **Run a test** — on **CLUSTER**, choose **WiFi** or **CELL** and tap **DRIVE**. Download, upload and ping fill the three hands; tap **ⓘ** for the receipt of how it was measured. **3·2·1** adds a launch countdown.
+3. **Watch live traffic** — **TRAFFIC** shows your live flow against its average; **BOOST · 10s** watches for ten seconds and reports the average and peak.
+4. **Map your rooms** — on **MAP**, pick a room and tap **GO** to save a reading there. Readings stay in your own browser.
+5. **On a laptop (optional)** — run the small local helper (see below) for true Wi-Fi signal strength and real traffic numbers.
+
 ## 🛠️ Run or build it yourself (developers)
 
 It's a single HTML file — no build, no dependencies. Browsers block `file://` fetches, so serve it over http:
