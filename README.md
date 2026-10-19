@@ -62,7 +62,7 @@ python3 -m http.server 8099
 
 - **One file:** the whole app is a single HTML page — vanilla JavaScript, Canvas 2D + `requestAnimationFrame`, `localStorage`. No framework, no build, no dependencies.
 - **Measurement:** download, upload and latency run over [Cloudflare](https://developers.cloudflare.com/speed/)'s keyless HTTPS endpoints, measured on a settled window (TCP slow-start excluded) with a per-run **stability error bar** — every reading carries how steady it was.
-- **Locked down:** a strict Content-Security-Policy pins the script by hash and limits network egress to Cloudflare's speed endpoints and the optional local helper only — nothing else can run or phone home. Room readings are saved only in your own browser.
+- **Locked down:** a strict Content-Security-Policy pins the script by hash and limits network egress to Cloudflare's speed endpoints, its own site (codereimagine.github.io) and the optional local helper only — nothing else can run or phone home. Room readings are saved only in your own browser.
 - **What a speed test sees:** like any speed test, measuring your connection shows your IP address to the server it tests against (here, Cloudflare). That's inherent to the measurement — velocity adds no tracking of its own.
 - **Optional:** a Python loopback helper (standard library only, on `127.0.0.1:7717`) reads true WiFi signal strength (RSSI in dBm) and flow when run on a laptop.
 - **Fonts:** JetBrains Mono + Orbitron, embedded in the file.
