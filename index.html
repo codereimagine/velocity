@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="A network speed test built as one chronograph instrument — download, upload, ping, live traffic and signal by room, over a real keyless speed test. No accounts, no trackers, no ads.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-gq1HtZ9hxFRvUZPhmnbyO6pdDGyCEU7zk8dkw5OynZ4='; style-src 'unsafe-inline'; font-src data:; img-src data:; connect-src 'self' https://speed.cloudflare.com http://127.0.0.1:7717 http://localhost:7717; base-uri 'none'; form-action 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-NtOPsb+5HgEsEnjFF/6qCbaj3mUa7gy+VU5oIL/G4e8='; style-src 'unsafe-inline'; font-src data:; img-src data: 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self' https://speed.cloudflare.com http://127.0.0.1:7717 http://localhost:7717; base-uri 'none'; form-action 'none';">
 <style>
 @font-face {
   font-family: 'JetBrains Mono';
@@ -72,6 +72,12 @@
 }
 </style>
 <title>VELOCITY</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#050506">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
   :root{
     --black:#000000; --panel:#060608; --edge:#0e0e12;
@@ -686,6 +692,20 @@ function rangeUl(m,stream){ var ns=fitScale(UL_STEPS,m); if(stream)ns=Math.max(S
   SCALE.ul=ns; tgt.ul=Math.min(1,m/ns); }
 function rangeLat(ping){ SCALE.lat=fitScale(LAT_STEPS,ping);
   tgt.lat=Math.max(0,Math.min(1,1-ping/SCALE.lat)); }
+// ── OFFLINE FALLBACK — no connection, no test: show the last REAL run, kept on this device and
+// labelled with when it ran. Never a made-up number; with no saved run the dial stays at zero. ──
+function saveLast(){ try{ localStorage.setItem("velocity.last",JSON.stringify({dl:lastRun.dl,ul:lastRun.ul,ping:lastRun.ping,t:Date.now()})); }catch(e){} }
+function showOffline(){
+  if(testing||cdActive) return;
+  var L=null; try{ L=JSON.parse(localStorage.getItem("velocity.last")||"null"); }catch(e){}
+  if(L&&L.t){
+    rangeLat(L.ping); rangeDl(L.dl,false); rangeUl(L.ul,false);
+    g("v-dl").textContent=L.dl; g("v-ul").textContent=L.ul; g("v-lat").textContent=L.ping;
+    var d=new Date(L.t);
+    g("status").textContent="OFFLINE · LAST RUN "+d.toLocaleDateString("en-US",{month:"short",day:"numeric"}).toUpperCase()+" "+d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+  } else g("status").textContent="OFFLINE · CONNECT TO TEST";
+  g("status").style.color="var(--steel)";
+}
 var START=-215, SWEEP=250;        // chronograph arc geometry (deg), shared axis, open at bottom
 
 function baseR(){return faceR(W,H);}
@@ -1158,11 +1178,11 @@ function runTest(){
         loadedPing:lp, grade:(bloat==null?null:(bloat<30?"LOW":bloat<100?"MODERATE":"HEAVY")),
         stability:dres.stability, rampCut:ENGINE.rampCut, secs:Math.round((Date.now()-runT0)/1000) };
       renderReceipt();
-      g("status").textContent="COMPLETE";g("status").style.color="var(--white)";
+      g("status").textContent="COMPLETE";g("status").style.color="var(--white)"; saveLast();
       g("flags").classList.add("show");
       evt("RUN COMPLETE");
       btn.classList.remove("run");btn.classList.remove("braking");btn.textContent="DRIVE";testing=false;
-    }catch(e){ if(!aborted){ g("status").textContent="OFFLINE?";g("status").style.color="var(--ul)";
+    }catch(e){ if(!aborted){ g("status").textContent=navigator.onLine?"OFFLINE?":"OFFLINE · CONNECT TO TEST";g("status").style.color="var(--ul)";
       btn.classList.remove("run");btn.classList.remove("braking");btn.textContent="DRIVE";testing=false; } }
   })();
 }
@@ -1214,11 +1234,18 @@ function startRun(){ testing=true;aborted=false; runTest(); }
 g("run").addEventListener("click",function(){
   if(cdActive){ cancelCountdown(); return; }
   if(testing){ abortRun(); return; }      // BRAKES — stop a run in progress
+  if(!navigator.onLine){ g("status").textContent="OFFLINE · CONNECT TO TEST"; g("status").style.color="var(--ul)"; return; }
   g("flags").classList.remove("show");
   if(!launchCd.cluster){ startRun(); return; }
   runCountdown("big","status",startRun);
 });
 
+
+if(!navigator.onLine) showOffline();
+addEventListener("offline",showOffline);
+addEventListener("online",function(){ if(!testing&&!cdActive){ g("status").textContent="READY"; g("status").style.color="var(--steel)"; } });
+// offline fallback: sw.js keeps the page openable with no connection (same-origin only; tests stay live)
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
 
 // ── HUD FURNITURE (rails, ticker, rack) — every element renders live state ──
 function evt(s){}
