@@ -26,7 +26,7 @@ $\textcolor{#00E5CF}{\textsf{download}}$ · $\textcolor{#FFD700}{\textsf{upload}
 
 ## ⚡ What is it?
 
-velocity measures your internet speed and shows it as a living chronograph. It's a single HTML file — open it and it runs instantly. Three faces: $\textcolor{#00E5CF}{\textsf{Cluster}}$ (download, upload and ping on one dial), $\textcolor{#FFD700}{\textsf{Traffic}}$ (your throughput live over time), and $\textcolor{#FF3D5C}{\textsf{Map}}$ (your connection quality, room by room). One tap to run.
+velocity measures your internet speed and shows it as a living chronograph. It's one HTML page — open it and it runs instantly. Three faces: $\textcolor{#00E5CF}{\textsf{Cluster}}$ (download, upload and ping on one dial), $\textcolor{#FFD700}{\textsf{Traffic}}$ (your throughput live over time), and $\textcolor{#FF3D5C}{\textsf{Map}}$ (your connection quality, room by room). One tap to run.
 
 No app store, no account, nothing to sign up for. Open the link and it works. Like it? Add it to your home screen like any other app.
 
@@ -36,7 +36,7 @@ Most apps want your account, your data, and your attention. Every codereimagine 
 
 - **Private by default** — no accounts, no tracking, nothing sold. Your exact location stays on *your* device.
 - **No ads, no clutter** — nothing on the screen is trying to sell you something.
-- **Yours to keep** — one self-contained HTML file: no install, no dependencies, and it runs from any web server.
+- **Yours to keep** — installs like an app and opens offline. With no connection it shows your last real result, labelled with when it ran — a speed test itself needs the internet, so it never makes up a number.
 - **Fully open & free** — the whole thing is public (Apache-2.0). Nothing hidden.
 - **Made to feel good** — an everyday tool should be beautiful, not just functional.
 
@@ -54,10 +54,11 @@ Most apps want your account, your data, and your attention. Every codereimagine 
 3. **Watch live traffic** — **TRAFFIC** shows your live flow against its average; **BOOST · 10s** watches for ten seconds and reports the average and peak.
 4. **Map your rooms** — on **MAP**, pick a room and tap **GO** to save a reading there. Readings stay in your own browser.
 5. **On a laptop (optional)** — run the small local helper (see below) for true Wi-Fi signal strength and real traffic numbers.
+6. **Keep it** — add it to your home screen. With no connection it still opens and shows your last real run, labelled with when it ran.
 
 ## 🛠️ Run or build it yourself (developers)
 
-It's a single HTML file — no build, no dependencies. Browsers block `file://` fetches, so serve it over http:
+It's one HTML page plus a small service worker — no build, no dependencies. Browsers block `file://` fetches, so serve it over http:
 
 ```bash
 git clone https://github.com/codereimagine/velocity.git
@@ -68,7 +69,8 @@ python3 -m http.server 8099
 
 <details><summary><b>🔧 Under the hood</b></summary>
 
-- **One file:** the whole app is a single HTML page — vanilla JavaScript, Canvas 2D + `requestAnimationFrame`, `localStorage`. No framework, no build, no dependencies.
+- **One page:** the whole app is a single HTML page — vanilla JavaScript, Canvas 2D + `requestAnimationFrame`, `localStorage`. No framework, no build, no dependencies.
+- **Offline:** a tiny service worker (`sw.js`) keeps the page openable with no connection. It never touches the speed test or the local helper, so every reading is live; offline, the last completed run is shown with its date and time.
 - **Measurement:** download, upload and latency run over [Cloudflare](https://developers.cloudflare.com/speed/)'s keyless HTTPS endpoints, measured on a settled window (TCP slow-start excluded) with a per-run **stability error bar** — every reading carries how steady it was.
 - **Design study.**
 - **Locked down:** a strict Content-Security-Policy pins the script by hash and limits network egress to Cloudflare's speed endpoints, its own site (codereimagine.github.io) and the optional local helper only — nothing else can run or phone home. Room readings are saved only in your own browser.
