@@ -2,7 +2,7 @@
 
 # ⚡ velocity
 
-### A network speed test, built as one chronograph instrument — in a single HTML file.
+### A network speed test, built as one chronograph instrument — in a single HTML page.
 
 $\textcolor{#00E5CF}{\textsf{download}}$ · $\textcolor{#FFD700}{\textsf{upload}}$ · $\textcolor{#FF3D5C}{\textsf{ping}}$
 
