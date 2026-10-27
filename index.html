@@ -343,6 +343,7 @@
 </style>
 </head>
 <body data-view="cluster">
+<main>
 <canvas id="cluster" role="img" aria-label="speed test dial: download, upload and ping"></canvas>
 <div class="hudframe"><i></i><i></i><i></i><i></i></div>
 <div class="floor"></div>
@@ -383,7 +384,7 @@
 <b>PING <b id="r-ping">0</b> MS</b> — reaction time; lower = snappier games and calls. Jitter ±<span id="r-jit">0</span> MS = how steady it stays<br>
 <b>UNDER LOAD <b id="r-lping">—</b> MS</b> — your ping while the line is maxed out (<span id="r-grade">—</span> bufferbloat). This is why calls stutter when someone else streams<br>
 <span id="r-detail"></span><br>
-<canvas id="proofstrip" width="260" height="36" aria-label="download rate per quarter second: ramp-up greyed out and excluded, measured window lit"></canvas><br>
+<canvas id="proofstrip" width="260" height="36" role="img" aria-label="download rate per quarter second: ramp-up greyed out and excluded, measured window lit"></canvas><br>
 Cloudflare keyless HTTPS — no key, no account, no telemetry. Ramp-up (first 0.75s of each stage) is excluded from every number.</div>
 <div class="legend cluster-own">
   <div class="lg dl"><div class="k">DOWNLOAD</div><div class="v"><span id="v-dl">0</span></div><div class="u">MBPS</div></div>
@@ -442,6 +443,7 @@ Cloudflare keyless HTTPS — no key, no account, no telemetry. Ramp-up (first 0.
   <button class="drive" id="mapgo">GO</button>
 </div>
 
+</main>
 <script>
 var g=function(id){return document.getElementById(id);};
 
